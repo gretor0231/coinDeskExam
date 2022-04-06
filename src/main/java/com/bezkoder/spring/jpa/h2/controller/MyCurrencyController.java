@@ -2,7 +2,6 @@ package com.bezkoder.spring.jpa.h2.controller;
 
 
 import com.bezkoder.spring.jpa.h2.model.MyCurrency;
-import com.bezkoder.spring.jpa.h2.model.Tutorial;
 import com.bezkoder.spring.jpa.h2.services.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -57,13 +56,24 @@ public class MyCurrencyController {
         }
     }
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Boolean> deleteCurrency(@PathVariable("id") String id) {
+            Boolean result = currencyService.deleteCurrency(id);
+            return new ResponseEntity<>(result, HttpStatus.CREATED);
 
+    }
 
-//    MyCurrency updateCurrency(String symbol);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<MyCurrency> updateCurrency(@PathVariable("id") String id, @RequestBody MyCurrency currency) {
 
-//    boolean deleteCurrency(String symbol);
+        Optional<MyCurrency> newCurrency = Optional.ofNullable(currencyService.updateCurrency(id, currency));
 
-
+        if (newCurrency.isPresent()) {
+            return new ResponseEntity<>(newCurrency.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
 
 }

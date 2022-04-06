@@ -10,10 +10,10 @@ public interface CurrencyService {
 
     boolean addCurrency(String symbol);
 
-    MyCurrency updateCurrency(String symbol);
+    MyCurrency updateCurrency(String id, MyCurrency currency);
 
     MyCurrency getCurrency(String symbol);
 
-    boolean deleteCurrency(String symbol);
+    boolean deleteCurrency(String id);
 
 }
