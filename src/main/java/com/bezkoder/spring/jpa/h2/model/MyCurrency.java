@@ -1,6 +1,7 @@
 package com.bezkoder.spring.jpa.h2.model;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "currencys")
@@ -8,7 +9,7 @@ import javax.persistence.*;
 public class MyCurrency {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "symbol")
@@ -18,15 +19,19 @@ public class MyCurrency {
     private String description;
 
     @Column(name = "rate")
-    private float rate;
+    private String rate;
+
+    @Column(name="updateTime")
+    private LocalDateTime updateTime;// we use local time now
 
     public MyCurrency() {
     }
 
-    public MyCurrency(String symbol, String description, float rate) {
+    public MyCurrency(String symbol, String description, String rate, LocalDateTime updateTime) {
         this.symbol = symbol;
         this.description = description;
         this.rate = rate;
+        this.updateTime = updateTime;
     }
 
     public long getId() {
@@ -53,12 +58,20 @@ public class MyCurrency {
         this.description = description;
     }
 
-    public float getRate() {
+    public String getRate() {
         return rate;
     }
 
-    public void setRate(float rate) {
+    public void setRate(String rate) {
         this.rate = rate;
+    }
+
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
     }
 
     @Override
@@ -68,6 +81,7 @@ public class MyCurrency {
                 ", symbol='" + symbol + '\'' +
                 ", description='" + description + '\'' +
                 ", rate=" + rate +
+                ", updateTime=" + updateTime +
                 '}';
     }
 }

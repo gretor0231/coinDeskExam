@@ -6,9 +6,7 @@ import java.util.List;
 
 public interface CurrencyService {
 
-    void findCoinDesk();
-
-    List<MyCurrency> transferCoinDeskData();
+    List<MyCurrency> findCoinDesk();
 
     boolean addCurrency(String symbol);
 
