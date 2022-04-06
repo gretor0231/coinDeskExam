@@ -2,12 +2,14 @@ package com.bezkoder.spring.jpa.h2.controller;
 
 
 import com.bezkoder.spring.jpa.h2.model.MyCurrency;
+import com.bezkoder.spring.jpa.h2.model.Tutorial;
 import com.bezkoder.spring.jpa.h2.services.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:8081")
 @RestController
@@ -34,15 +36,31 @@ public class MyCurrencyController {
         }
     }
 
+    @PostMapping("/post/{symbol}")
+    public ResponseEntity<Boolean> createCurrency(@PathVariable String symbol) {
+        try {
+            Boolean result = currencyService.addCurrency(symbol);
+            return new ResponseEntity<>(result, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/get/{symbol}")
+    public ResponseEntity<MyCurrency> getMyCurrencyBySymbol(@PathVariable String symbol) {
+        Optional<MyCurrency> myCurrencyData = Optional.ofNullable(currencyService.getCurrency(symbol));
+
+        if (myCurrencyData.isPresent()) {
+            return new ResponseEntity<>(myCurrencyData.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
 
 
-//    boolean addCurrency(String symbol);
-//
 //    MyCurrency updateCurrency(String symbol);
-//
-//    MyCurrency getCurrency(String symbol);
-//
+
 //    boolean deleteCurrency(String symbol);
 
 

@@ -33,7 +33,6 @@ public class CurrencyServiceImpl implements CurrencyService {
         JSONObject objTwo = obj.getJSONObject("bpi");
         List<MyCurrency> result = new ArrayList<>();
         LocalDateTime time = LocalDateTime.now();
-        int id = 1;
         for(String keyString : objTwo.keySet()){
             MyCurrency myCurrency = new MyCurrency();
             String code = objTwo.getJSONObject(keyString).getString("code");
@@ -50,7 +49,6 @@ public class CurrencyServiceImpl implements CurrencyService {
             String rate = objTwo.getJSONObject(keyString).getString("rate");
             myCurrency.setRate(rate);
             myCurrency.setUpdateTime(time);
-            myCurrency.setId(id++);
             result.add(myCurrency);
         }
         return result;
@@ -58,6 +56,13 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     @Override
     public boolean addCurrency(String symbol) {
+        List<MyCurrency> currencies = findCoinDesk();
+        for(MyCurrency currency : currencies){
+            if(currency.getSymbol().equals(symbol)){
+                myCurrencyRepository.save(currency);
+                return true;
+            }
+        }
         return false;
     }
 
@@ -68,6 +73,13 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     @Override
     public MyCurrency getCurrency(String symbol) {
+
+        List<MyCurrency> currencies = myCurrencyRepository.findAll();
+        for (MyCurrency currency : currencies){
+            if(currency.getSymbol().equals(symbol)){
+                return currency;
+            }
+        }
         return null;
     }
 
